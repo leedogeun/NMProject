@@ -28,7 +28,8 @@
 	    	<textarea id="bcontent" name="bcontent" class="form-control" rows="3" placeholder="내용을 입력하세요"></textarea>
 	  	</div>
 	  	<div class="form-group">
-	  		<input type="submit" class="btn btn-default" value="작성하기"/> <a href="boardList?pageNo=${pageNo}" class="btn btn-default" role="button">목록</a>
+	  		<input type="submit" class="btn btn-default" value="작성하기"/> 
+	  		<a href="boardList?pageNo=${pageNo}" class="btn btn-default" role="button">목록</a>
 	  	</div>
 	</form>	
 </body>

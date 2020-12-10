@@ -14,7 +14,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>게시물 상세보기</h2>
+	<h3>게시물 상세보기</h3>
 	<form> 
 		<div class="form-group">
 	    	<label for="bno">글번호</label>
@@ -40,9 +40,27 @@
 	    	<label for="bcontent">내용</label>
 	    	<textarea id="bcontent" class="form-control" rows="3" readonly>${board.bcontent}</textarea>
 	  	</div>
+	  	<%-- <div class="form-group">
+	    	<label for="bcomment">댓글</label>
+	    	<textarea id="bcomment" class="form-control" rows="3" readonly>${board.bcomment} 댓글</textarea>
+	  	</div>	 --%>  		
 	</form>
 	<a href="updateBoard?bno=${board.bno}" class="btn btn-default" role="button">수정</a>
 	<a href="deleteBoard?bno=${board.bno}" class="btn btn-default" role="button">삭제</a>
 	<a href="boardList?pageNo=${pageNo}" class="btn btn-default" role="button">목록</a>
+	
+	<h3>댓글</h3>
+	<form method="post" action="writeComment" >
+		<div class="form-group">
+			<input type="hidden" name="bno" value="${board.bno}"/>
+	    	<input id="bcomment" name="bcomment" type="text" class="form-control" placeholder="댓글을 남기시려면 작성해주세요.">
+	    	<input type="submit" class="btn btn-default" value="작성하기"/>
+	    	<a href="updateBoard?bno=${board.bno}" class="btn btn-default" role="button">수정</a>
+			<a href="deleteBoard?bno=${board.bno}" class="btn btn-default" role="button">삭제</a>
+			<a href="boardList?pageNo=${pageNo}" class="btn btn-default" role="button">목록</a>	 
+	  	</div>
+	</form>
+	
+	
 </body>
 </html>

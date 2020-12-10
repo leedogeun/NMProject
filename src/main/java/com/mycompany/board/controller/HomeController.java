@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mycompany.board.dto.Board;
 import com.mycompany.board.service.BoardService;
@@ -24,18 +27,87 @@ public class HomeController {
 	@Autowired
 	private BoardService service;
 
+	@RequestMapping(value = "/writeComment", method = RequestMethod.POST)
+	public String writeComment(Board board, HttpSession session) {
+		service.writeBoard(board);
+		int pageNo = (Integer) session.getAttribute("pageNo");
+		return "redirect:/boardDetail?pageNo="+pageNo;
+	}
+	
+	// 목록
+	@RequestMapping("/boardList")
+	public String boardList(Model model, @RequestParam(defaultValue = "1") int pageNo, HttpSession session) {
+		session.setAttribute("pageNo", pageNo);
+		// 페이지 당 행 수 : 답글 포함 20개
+		int rowsPerPage = 20;
+		// 이전 , 다음 클릭했을 때 나오는 페이지 수
+		int pagesPerGroup = 5;
+		// 전체 게시물 수
+		int totalRowNum = service.getTotalRowNo();
+		// 전체 페이지 수
+		int totalPageNum = totalRowNum / rowsPerPage;
+		if (totalRowNum % rowsPerPage != 0) {
+			totalPageNum++; // 남는 짜투리 페이지도 페이지로 인정
+		}
+		// 전체 그룹 수
+		int totalGroupNum = totalPageNum / pagesPerGroup;
+		if (totalPageNum % pagesPerGroup != 0) {
+			totalGroupNum++; // 남는 짜투리 그룹도 그룹으로 인정
+		}
+		// 현재 페이지의 그룹번호
+		int groupNo = (pageNo - 1) / pagesPerGroup + 1;
+		// pageNo 기준 1~5 1
+		// 6~10 2
+		// 11~15 3
+		// 현재 그룹의 시작 페이지 번호
+		int startPageNo = (groupNo - 1) * pagesPerGroup + 1;
+		// 현재 그룹의 마지막 페이지 번호
+		int endPageNo = startPageNo + pagesPerGroup - 1;
+		// 1 + 5 - 1 = 5;
+		if (groupNo == totalGroupNum) {
+			endPageNo = totalPageNum;
+		}
+
+		// 현재 페이지의 시작 행 번호
+		int startRowNo = (pageNo - 1) * rowsPerPage + 1;
+		// 현재 페이지의 끝 행 번호
+		int endRowNo = pageNo * rowsPerPage;
+		if (pageNo == totalPageNum) { // 현재 그룹의 번호가 전체 그룹 수(마지막 그룹번호)와 같다면
+			endRowNo = totalRowNum; // 끝 행 번호는 전체 행 번호 수 만큼 된다.
+		}
+
+		// 현재 페이지의 게시물 가져오기
+		List<Board> boardList = service.getBoardList(startRowNo, endRowNo);
+
+		// JSP로 페이지 정보 넘기기
+		model.addAttribute("pagesPerGroup", pagesPerGroup); // 그룹 당 페이지 수
+		model.addAttribute("totalPageNum", totalPageNum); // 전체 페이지 수 : 11 이라면
+		model.addAttribute("totalGroupNum", totalGroupNum); // 전체 그룹의 수 : 3
+		model.addAttribute("groupNo", groupNo); // 현재 그룹 번호 : 1~5이면 1, 6~10이면 2
+		model.addAttribute("startPageNo", startPageNo); // 현재 그룹의 시작 페이지 번호 : 1 그룹이면 1, 2 그룹이면 6
+		model.addAttribute("endPageNo", endPageNo); // 현재 그룹의 마지막 페이지 번호 : 1 그룹이면 5 ,2 그룹이면 10
+		model.addAttribute("pageNo", pageNo); // 현재 페이지 번호 : 사용자가 클릭한 번호
+		model.addAttribute("boardList", boardList); // 현재 페이지 내용
+
+		return "/boardList";
+	}
+
+	// 삭제
 	@RequestMapping("/deleteBoard")
 	public String deleteBoard(int bno) {
 		service.deleteBoard(bno);
 		return "redirect:boardList";
 	}
 
+	// 수정 완료
 	@RequestMapping(value = "/updateBoard", method = RequestMethod.POST)
-	public String updateBoard(Board board) {
+	public String updateBoard(Board board, HttpSession session) {
 		service.updateBoard(board);
-		return "redirect:boardList";
+		int pageNo = (Integer) session.getAttribute("pageNo");
+		return "redirect:/boardList?pageNo=" + pageNo;
 	}
 
+	// 수정하기
 	@RequestMapping(value = "/updateBoard", method = RequestMethod.GET)
 	public String updateBoardForm(int bno, Model model) {
 		Board board = service.getBoard(bno);
@@ -43,6 +115,7 @@ public class HomeController {
 		return "/updateBoardForm";
 	}
 
+	// 상세보기
 	@RequestMapping("/boardDetail")
 	public String boardDetail(int bno, Model model) {
 		service.increaseHitcount(bno);
@@ -51,22 +124,18 @@ public class HomeController {
 		return "/boardDetail";
 	}
 
-	@RequestMapping("/boardList")
-	public String boardList(Model model) {
-		List<Board> boardList = service.getBoardList();
-		model.addAttribute("boardList", boardList);
-		return "/boardList";
-	}
-
+	// 글쓰기
 	@RequestMapping("/writeBoardForm")
 	public String writeBoardForm() {
 		return "/writeBoardForm";
 	}
 
+	// 글쓰기 완료
 	@RequestMapping("/writeBoard")
-	public String writeBoard(Board board) {
+	public String writeBoard(Board board, HttpSession session) {
 		service.writeBoard(board);
-		return "redirect:/boardList";
+		int pageNo = (Integer) session.getAttribute("pageNo");
+		return "redirect:/boardList?pageNo=" + pageNo;
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)

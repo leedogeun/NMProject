@@ -14,8 +14,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>게시판</h2>
-	<table class="table table-bordered table-hover">
+	<table class="table table-bordered table-hover table-condensed">
 		<thead>
 			<tr>
 				<th scope="col">글번호</th>
@@ -36,7 +35,34 @@
 					</tr>
 				</c:forEach> 
 		</tbody>
-	</table>	
-	<div><a class="btn btn-default" href="writeBoardForm" role="button">작성하기</a></div>	
+	</table>
+	<div style="display: flex;">
+		<div style="flex-grow: 1;">
+			<a href="boardList?pageNo=1" class="btn btn-default">처음</a>
+			<c:if test="${groupNo>1}">
+				<a href="boardList?pageNo=${startPageNo-1}" class="btn btn-default">이전</a>
+			</c:if>
+			<div style="display: inline-block;" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+				<div class="btn-group mr-2" role="group" aria-label="First group">
+					<c:forEach begin="${startPageNo}" end="${endPageNo}" var="i">
+						<c:if test="${pageNo==i}">
+							<a href="boardList?pageNo=${i}" class="btn btn-secondary active" >${i}</a>
+						</c:if>
+						<c:if test="${pageNo!=i}">
+							<a href="boardList?pageNo=${i}" class="btn btn-secondary" >${i}</a>
+						</c:if>
+					</c:forEach>
+				</div>
+			</div>
+			<c:if test="${groupNo<totalGroupNum}">
+				<a href="boardList?pageNo=${endPageNo+1}" class="btn btn-default">다음</a>  <%-- 다음 그룹으로 넘어감 --%>
+				<%-- <a href="boardList?pageNo=${pageNo+1}" class="btn btn-default">다음</a> --%>  <%-- 다음 페이지로 넘어감 --%>
+			</c:if>
+			<a href="boardList?pageNo=${totalPageNum}" class="btn btn-default">맨끝</a>
+			<div>  
+				<a class="btn btn-default" href="writeBoardForm" role="button">글 쓰기</a>
+			</div>
+		</div>
+	</div>	
 </body>
 </html>

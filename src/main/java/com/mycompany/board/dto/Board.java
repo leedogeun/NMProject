@@ -10,6 +10,7 @@ public class Board {
 	private String bwriter;
 	private Date bdate;
 	private int hitcount;
+	private String bcomment;
 
 	public int getBno() {
 		return bno;
@@ -57,6 +58,14 @@ public class Board {
 
 	public void setHitcount(int hitcount) {
 		this.hitcount = hitcount;
+	}
+
+	public String getBcomment() {
+		return bcomment;
+	}
+
+	public void setBcomment(String bcomment) {
+		this.bcomment = bcomment;
 	}
 
 }
