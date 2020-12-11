@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mycompany.board.dto.Bcomment;
 import com.mycompany.board.dto.Board;
 import com.mycompany.board.service.BoardService;
+import com.mycompany.board.service.CommentService;
 
 @Controller
 public class HomeController {
@@ -25,16 +27,29 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
-	private BoardService service;
+	private BoardService service; // 게시물
 
-	@RequestMapping(value = "/writeComment", method = RequestMethod.POST)
-	public String writeComment(Board board, HttpSession session) {
-		service.writeBoard(board);
-		int pageNo = (Integer) session.getAttribute("pageNo");
-		return "redirect:/boardDetail?pageNo="+pageNo;
-	}
-	
-	// 목록
+	@Autowired
+	private CommentService commmentService; // 댓글
+
+	// 댓글 목록
+//	@RequestMapping("/commentList")
+//	public String getComment(int bno, Model model) {
+//		Bcomment bcomment = commmentService.getComment(bno);
+//		model.addAttribute("bcomment", bcomment);
+//		return "/commentList";
+//	}
+
+	// 댓글
+//	@RequestMapping(value = "/writeComment", method = RequestMethod.POST)
+//	public String writeComment(Bcomment comment) {
+//		commmentService.writeComment(comment);
+//		// int pageNo = (Integer) session.getAttribute("pageNo");
+//		// return "redirect:/boardList?pageNo=" + pageNo;
+//		return "redirect:/boardDetail?bno=" + comment.getBno(); // 상세보기에서 댓글을 작성했기 때문에 상세보기 페이지로 이동이 필요함
+//	}
+
+	// 게시물 목록
 	@RequestMapping("/boardList")
 	public String boardList(Model model, @RequestParam(defaultValue = "1") int pageNo, HttpSession session) {
 		session.setAttribute("pageNo", pageNo);
@@ -115,12 +130,23 @@ public class HomeController {
 		return "/updateBoardForm";
 	}
 
-	// 상세보기
+	// 게시물 상세보기
+//	@RequestMapping("/boardDetail")
+//	public String boardDetail(int bno, Model model) {
+//		service.increaseHitcount(bno);
+//		Board board = service.getBoard(bno);
+//		model.addAttribute("board", board);
+//		return "/boardDetail";
+//	}
+
+	// 게시물 상세보기 + 해당 게시물의 댓글 보기
 	@RequestMapping("/boardDetail")
 	public String boardDetail(int bno, Model model) {
 		service.increaseHitcount(bno);
 		Board board = service.getBoard(bno);
+		Bcomment bcomment = commmentService.getComment(bno);
 		model.addAttribute("board", board);
+		model.addAttribute("bcomment", bcomment);
 		return "/boardDetail";
 	}
 

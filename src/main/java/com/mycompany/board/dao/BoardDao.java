@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mycompany.board.dto.Bcomment;
 import com.mycompany.board.dto.Board;
 
 @Repository
@@ -55,7 +56,7 @@ public class BoardDao {
 		return board;
 	}
 
-	// 글쓰기, 댓글
+	// 글쓰기
 	public int insert(Board board) {
 		int rows = sqlSessionTemplate.insert("board.insert", board);
 		return rows;

@@ -14,6 +14,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<h1>XXXXXXXXXXXXXXXXXX!controller에 commentList없음!XXXXXXXXXXXXXXXXXXXXXXXXX</h1>
 	<h4>게시물 상세보기</h4>
 	<form> 
 		<div class="form-group">
@@ -44,9 +45,8 @@
 	<a href="updateBoard?bno=${board.bno}" class="btn btn-default" role="button">수정</a>
 	<a href="deleteBoard?bno=${board.bno}" class="btn btn-default" role="button">삭제</a>
 	<a href="boardList?pageNo=${pageNo}" class="btn btn-default" role="button">목록</a>
-
+	
 	<!-- 댓글 목록 -->
-	<c:if test="${not empty bcomment}"> <!-- 댓글이 있다면 해당하는 게시물의 댓글을 보여줌 -->
 	<h4>댓글</h4>
 	<table class="table table-bordered table-hover table-condensed">
 		<thead>
@@ -61,32 +61,18 @@
 		<tbody>
 			<tr>
 				<%-- <th scope="row">${bcomment.bno}</th>
-				<th scope="row">${bcomment.cno}</th>  --%>
+				<th scope="row">${bcomment.cno}</th> --%>
 				<td>${bcomment.cwriter}</td>
 				<td>${bcomment.ccontent}</td>
 				<td><fmt:formatDate value="${bcomment.cdate}" pattern="yyyy-MM-dd" /></td>
 			</tr>
 		</tbody>
 	</table>	
-	<a href="updateComment?cno=${comment.cno}" class="btn btn-default" role="button">댓글 수정</a>
-	<a href="deleteComment?cno=${comment.cno}" class="btn btn-default" role="button">댓글 삭제</a>
-	</c:if>
-	<c:if test="${empty bcomment}"> <!-- 해당하는 게시물의 댓글이 없다면 댓글을 작성하는 폼 보여줌 -->
-	<h4>댓글 작성하기</h4>
-	<form method="post" action="writeComment" >
-	    <div class="form-group">
-	   		<label for="cwriter">댓글 작성자</label>
-	    	<input id="cwriter" name="bwriter" type="text" class="form-control" placeholder="댓글 작성자">
-	  	</div>
-	  	<div class="form-group">
-	    	<label for="ccontent">댓글 내용</label>
-	    	<textarea id="ccontent" name="ccontent" class="form-control" rows="3" placeholder="댓글을 작성해주세요."></textarea>
-	  	</div>
-	  	<div class="form-group">
-	  		<input type="submit" class="btn btn-default" value="댓글 작성하기"/> 
-	  		<a href="boardDetail?pageNo=${pageNo}" class="btn btn-default" role="button">목록</a>
-	  	</div>
-	</form>		
-	</c:if> 
+
+	<%-- <a href="updateComment?cno=${comment.cno}" class="btn btn-default" role="button">수정</a>
+	<a href="deleteComment?cno=${comment.cno}" class="btn btn-default" role="button">삭제</a> --%>
+	<a href="boardList?pageNo=${pageNo}" class="btn btn-default" role="button">목록</a>	
+	
+
 </body>
 </html>

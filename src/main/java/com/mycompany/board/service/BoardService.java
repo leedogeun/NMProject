@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.board.dao.BoardDao;
+import com.mycompany.board.dto.Bcomment;
 import com.mycompany.board.dto.Board;
 
 @Service
@@ -16,7 +17,7 @@ public class BoardService {
 
 	// 게시물 가져오기
 	public List<Board> getBoardList(int startRowNo, int endRowNo) {
-		List<Board> boardList = boardDao.selectList(startRowNo, endRowNo); 
+		List<Board> boardList = boardDao.selectList(startRowNo, endRowNo);
 		return boardList;
 	}
 
@@ -31,7 +32,7 @@ public class BoardService {
 		boardDao.deleteBoard(bno);
 	}
 
-	// 수정 
+	// 수정
 	public void updateBoard(Board board) {
 		boardDao.updateBoard(board);
 	}
@@ -47,7 +48,7 @@ public class BoardService {
 		return board;
 	}
 
-	// 글쓰기, 댓글
+	// 글쓰기
 	public void writeBoard(Board board) {
 		boardDao.insert(board);
 	}
