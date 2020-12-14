@@ -15,6 +15,7 @@ public class BoardService {
 	@Autowired
 	private BoardDao boardDao;
 
+
 	// 게시물 가져오기
 	public List<Board> getBoardList(int startRowNo, int endRowNo) {
 		List<Board> boardList = boardDao.selectList(startRowNo, endRowNo);

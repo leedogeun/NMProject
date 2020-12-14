@@ -41,13 +41,14 @@ public class HomeController {
 //	}
 
 	// 댓글
-//	@RequestMapping(value = "/writeComment", method = RequestMethod.POST)
-//	public String writeComment(Bcomment comment) {
-//		commmentService.writeComment(comment);
-//		// int pageNo = (Integer) session.getAttribute("pageNo");
-//		// return "redirect:/boardList?pageNo=" + pageNo;
-//		return "redirect:/boardDetail?bno=" + comment.getBno(); // 상세보기에서 댓글을 작성했기 때문에 상세보기 페이지로 이동이 필요함
-//	}
+	@RequestMapping(value = "/writeComment", method = RequestMethod.POST)
+	public String writeComment(Bcomment comment) {
+		System.out.println(comment.getBno());
+		commmentService.writeComment(comment);
+		// int pageNo = (Integer) session.getAttribute("pageNo");
+		// return "redirect:/boardList?pageNo=" + pageNo;
+		return "redirect:/boardDetail?bno=" + comment.getBno(); // 상세보기에서 댓글을 작성했기 때문에 상세보기 페이지로 이동이 필요함
+	}
 
 	// 게시물 목록
 	@RequestMapping("/boardList")

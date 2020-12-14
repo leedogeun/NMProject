@@ -2,6 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="comment">
 
+	<!-- 댓글 작성하기-->
+	<!-- <insert id="insert" parameterType="com.mycompany.board.dto.Bcomment">
+		<selectKey keyProperty="bno" resultType="int" order="BEFORE"> 
+			select bno from board where bno = #{bno} 
+		</selectKey> 
+		insert into bcomment(bno, cno, cwriter, ccontent, cdate)
+		values(#{bno}, #{cno}, #{cwriter}, #{ccontent}, sysdate) 
+	</insert>  --> <!-- cno 값이 들어가지 않음 -->
+	
+	<insert id="insert" parameterType="com.mycompany.board.dto.Bcomment">
+		<selectKey keyProperty="cno" resultType="int" order="BEFORE">
+			select board_cno_seq.nextval from dual
+		</selectKey>
+		insert into bcomment(bno, cno, cwriter, cpassword, ccontent, cdate)
+		values(#{bno}, #{cno}, #{cwriter}, #{cpassword}, #{ccontent}, sysdate)
+	</insert>
+
 	<!-- 해당 게시물의 댓글 보기 -->
 	<select id="selectComment" resultType="com.mycompany.board.dto.Bcomment">
 		select bno, cno, cwriter, ccontent, cdate 
@@ -9,15 +26,5 @@
 		where bno = #{bno}
 	</select>
 	
-	
-	<!-- 댓글 작성하기-->
-	<!-- <insert id="insert" parameterType="com.mycompany.board.dto.Bcomment">
-		<selectKey keyProperty="bno" resultType="int" order="BEFORE"> bno 한 개당 한 개의 댓글만 남길 수 있다.
-			select bno from board where bno = #{bno} 
-		</selectKey> cno의 값은 들어가지 않고 있다.
-		insert into bcomment(bno, cno, cwriter, ccontent, cdate)
-		values(#{bno}, #{cno}, #{cwriter}, #{ccontent}, sysdate) 
-	</insert>  -->
-   
    
 </mapper>           

@@ -12,6 +12,12 @@ public class CommentDao {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
+	// 댓글 작성하기
+	public int insertComment(Bcomment comment) {
+		int rows = sqlSessionTemplate.insert("comment.insert", comment);
+		return rows;
+	}
+
 	// 해당 게시물의 댓글 보기
 	public Bcomment selectComment(int bno) {
 		Bcomment bcomment = sqlSessionTemplate.selectOne("comment.selectComment", bno);
@@ -21,12 +27,6 @@ public class CommentDao {
 //	public List<Bcomment> selectList(int bno) {
 //		List<Bcomment> commentList = sqlSessionTemplate.selectList("comment.selectList", bno);
 //		return commentList;
-//	}
-
-	// 댓글 작성하기
-//	public int insertComment(Bcomment comment) {
-//		int rows = sqlSessionTemplate.insert("comment.insert", comment);
-//		return rows;
 //	}
 
 }

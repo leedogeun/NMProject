@@ -17,6 +17,7 @@ public class BoardDao {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
+
 	// 게시물 가져오기
 	public List<Board> selectList(int startRowNo, int endRowNo) {
 		Map<String, Integer> map = new HashMap<>();
