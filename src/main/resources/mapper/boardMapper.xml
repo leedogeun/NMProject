@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
-
 	
-	<!-- 게시물 가져오기 -->
+	<!-- 게시글 가져오기 -->
 	<select id="selectList" parameterType="map" resultType="com.mycompany.board.dto.Board">
 		select rn, bno, btitle, bcontent, bwriter, bdate, hitcount
 		from(
@@ -18,37 +17,37 @@
 		where rn &gt;= #{startRowNo} <!-- >=1 -->
 	</select>
  
-	<!-- 전체 게시물 수 가져오기 -->
+	<!-- 전체 게시글 수 가져오기 -->
 	<select id="selectTotalRowNum" resultType="int">
 		select count(*) from board
 	</select>
 
-	<!-- 삭제 -->
+	<!-- 게시글 삭제 -->
 	<delete id="deleteBoard" parameterType="int">
 		delete from board 
 		where bno = #{bno}
 	</delete>
 
-	<!-- 수정 -->
+	<!-- 게시글 수정 완료 -->
 	<update id="updateBoard" parameterType="com.mycompany.board.dto.Board">
 		update board set btitle = #{btitle}, bcontent = #{bcontent}
 		where bno = #{bno}
 	</update>
 
-	<!-- 조회수 증가 -->
+	<!-- 게시글 조회수 증가 -->
 	<update id="updateHitcount" parameterType="int">
 		update board set hitcount = hitcount+1
 		where bno = #{bno}
 	</update>
 
-	<!-- 상세 보기, 수정하기 -->
+	<!-- 게시글 상세 보기, 해당 게시글의 댓글 보기, 게시글 수정 -->
 	<select id="selectBoard" resultType="com.mycompany.board.dto.Board">
 		select bno, btitle, bcontent, bwriter, bdate, hitcount
 		from board
 		where bno = #{bno}
 	</select>
 
-	<!-- 글쓰기 -->
+	<!-- 게시글 쓰기 -->
 	<insert id="insert" parameterType="com.mycompany.board.dto.Board">
 		<selectKey keyProperty="bno" resultType="int" order="BEFORE"> 
 			select board_bno_seq.nextval from dual 

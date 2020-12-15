@@ -8,7 +8,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.mycompany.board.dto.Bcomment;
 import com.mycompany.board.dto.Board;
 
 @Repository
@@ -17,8 +16,7 @@ public class BoardDao {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
-
-	// 게시물 가져오기
+	// 게시글 가져오기
 	public List<Board> selectList(int startRowNo, int endRowNo) {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("startRowNo", startRowNo);
@@ -27,37 +25,37 @@ public class BoardDao {
 		return boardList;
 	}
 
-	// 전체 게시물 수 가져오기
+	// 전체 게시글 수 가져오기
 	public int selectTotalRowNo() {
 		int totalRowNum = sqlSessionTemplate.selectOne("board.selectTotalRowNum");
 		return totalRowNum;
 	}
 
-	// 삭제
+	// 게시글 삭제
 	public int deleteBoard(int bno) {
 		int rows = sqlSessionTemplate.delete("board.deleteBoard", bno);
 		return rows;
 	}
 
-	// 수정
+	// 게시글 수정 완료
 	public int updateBoard(Board board) {
 		int rows = sqlSessionTemplate.update("board.updateBoard", board);
 		return rows;
 	}
 
-	// 조회수 증가
+	// 게시글 조회수 증가
 	public int updateHitcount(int bno) {
 		int rows = sqlSessionTemplate.update("board.updateHitcount", bno);
 		return rows;
 	}
 
-	// 상세보기, 수정하기
+	// 게시글 상세보기, 해당 게시글의 댓글 보기, 게시글 수정
 	public Board selectBoard(int bno) {
 		Board board = sqlSessionTemplate.selectOne("board.selectBoard", bno);
 		return board;
 	}
 
-	// 글쓰기
+	// 게시글 쓰기
 	public int insert(Board board) {
 		int rows = sqlSessionTemplate.insert("board.insert", board);
 		return rows;

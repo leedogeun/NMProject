@@ -13,10 +13,10 @@
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-	function checkForm() {
+	function checkForm() { // 비밀번호를 입력했는지 확인
 		var pw = $("#bpassword").val();
 		if(pw == "") {
-			//$("#bpasswordError").text("비밀번호를 입력하세요."); // span 부분에 에러메세지 내용이 나타난다.  
+			// $("#bpasswordError").text("비밀번호를 입력하세요."); // span 부분에 에러메세지 내용이 나타난다.  
 			alert("비밀번호를 입력하세요"); 
 			return false;
 		}
@@ -26,7 +26,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>게시물 작성하기</h2>
+	<h2>게시글 작성하기</h2>
 	<form method="post" action="writeBoard" onsubmit="return checkForm()"> <!-- onsubmit의 값이 true여야 action실행 -->
 		<div class="form-group">
 	    	<label for="btitle">제목</label>

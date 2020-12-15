@@ -16,7 +16,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>게시물 수정하기</h2>
+	<h2>게시글 수정하기</h2>
 	<form method="post" action="updateBoard">
 		<input type="hidden" name="bno" value="${board.bno}"/>
 		<div class="form-group">
@@ -32,6 +32,5 @@
 	  			<a href="boardList?pageNo=${pageNo}" class="btn btn-default" role="button">목록</a>
 	  	</div>
 	</form>		
-
 </body>
 </html>

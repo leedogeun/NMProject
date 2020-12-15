@@ -27,30 +27,36 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
-	private BoardService service; // 게시물
+	private BoardService service; // 게시글
 
 	@Autowired
 	private CommentService commmentService; // 댓글
 
-	// 댓글 목록
-//	@RequestMapping("/commentList")
-//	public String getComment(int bno, Model model) {
-//		Bcomment bcomment = commmentService.getComment(bno);
-//		model.addAttribute("bcomment", bcomment);
-//		return "/commentList";
-//	}
-
-	// 댓글
-	@RequestMapping(value = "/writeComment", method = RequestMethod.POST)
-	public String writeComment(Bcomment comment) {
-		System.out.println(comment.getBno());
-		commmentService.writeComment(comment);
-		// int pageNo = (Integer) session.getAttribute("pageNo");
-		// return "redirect:/boardList?pageNo=" + pageNo;
-		return "redirect:/boardDetail?bno=" + comment.getBno(); // 상세보기에서 댓글을 작성했기 때문에 상세보기 페이지로 이동이 필요함
+	// 댓글 수정 완료
+	@RequestMapping(value = "/updateComment", method = RequestMethod.POST)
+	public String updateComment(Bcomment comment, int bno) {
+		commmentService.updateComment(comment);
+		return "redirect:/boardDetail?bno=" + bno; // 상세보기에서 댓글 수정했기 때문에 상세보기 페이지로 이동
 	}
 
-	// 게시물 목록
+	// 댓글 수정
+	@RequestMapping(value = "/updateCommentForm", method = RequestMethod.GET)
+	public String updateCommentForm(int bno, Model model) {
+		Board board = service.getBoard(bno);
+		Bcomment comment = commmentService.getComment(bno);
+		model.addAttribute("board", board);
+		model.addAttribute("comment", comment);
+		return "/updateComment";
+	}
+
+	// 댓글 쓰기 완료
+	@RequestMapping(value = "/writeComment", method = RequestMethod.POST)
+	public String writeComment(Bcomment comment) {
+		commmentService.writeComment(comment);
+		return "redirect:/boardDetail?bno=" + comment.getBno(); // 상세보기에서 댓글 작성했기 때문에 상세보기 페이지로 이동
+	}
+
+	// 게시글 목록
 	@RequestMapping("/boardList")
 	public String boardList(Model model, @RequestParam(defaultValue = "1") int pageNo, HttpSession session) {
 		session.setAttribute("pageNo", pageNo);
@@ -108,14 +114,14 @@ public class HomeController {
 		return "/boardList";
 	}
 
-	// 삭제
+	// 게시글 삭제
 	@RequestMapping("/deleteBoard")
 	public String deleteBoard(int bno) {
 		service.deleteBoard(bno);
 		return "redirect:boardList";
 	}
 
-	// 수정 완료
+	// 게시글 수정 완료
 	@RequestMapping(value = "/updateBoard", method = RequestMethod.POST)
 	public String updateBoard(Board board, HttpSession session) {
 		service.updateBoard(board);
@@ -123,7 +129,7 @@ public class HomeController {
 		return "redirect:/boardList?pageNo=" + pageNo;
 	}
 
-	// 수정하기
+	// 게시글 수정
 	@RequestMapping(value = "/updateBoard", method = RequestMethod.GET)
 	public String updateBoardForm(int bno, Model model) {
 		Board board = service.getBoard(bno);
@@ -131,16 +137,7 @@ public class HomeController {
 		return "/updateBoardForm";
 	}
 
-	// 게시물 상세보기
-//	@RequestMapping("/boardDetail")
-//	public String boardDetail(int bno, Model model) {
-//		service.increaseHitcount(bno);
-//		Board board = service.getBoard(bno);
-//		model.addAttribute("board", board);
-//		return "/boardDetail";
-//	}
-
-	// 게시물 상세보기 + 해당 게시물의 댓글 보기
+	// 게시물 상세보기 + 해당 게시글의 댓글 보기
 	@RequestMapping("/boardDetail")
 	public String boardDetail(int bno, Model model) {
 		service.increaseHitcount(bno);
@@ -151,18 +148,18 @@ public class HomeController {
 		return "/boardDetail";
 	}
 
-	// 글쓰기
-	@RequestMapping("/writeBoardForm")
-	public String writeBoardForm() {
-		return "/writeBoardForm";
-	}
-
-	// 글쓰기 완료
+	// 게시글 쓰기 완료
 	@RequestMapping("/writeBoard")
 	public String writeBoard(Board board, HttpSession session) {
 		service.writeBoard(board);
 		int pageNo = (Integer) session.getAttribute("pageNo");
 		return "redirect:/boardList?pageNo=" + pageNo;
+	}
+
+	// 게시글 쓰기
+	@RequestMapping("/writeBoardForm")
+	public String writeBoardForm() {
+		return "/writeBoardForm";
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)

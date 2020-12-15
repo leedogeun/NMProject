@@ -12,20 +12,20 @@ public class CommentService {
 	@Autowired
 	private CommentDao commentDao;
 
-	// 댓글
-	public void writeComment(Bcomment comment) {
-		commentDao.insertComment(comment); // 댓글 작성하기
+	// 댓글 수정 완료
+	public void updateComment(Bcomment comment) {
+		commentDao.updateComment(comment);
 	}
 
-	// 해당 게시물의 댓글 보기
+	// 댓글 쓰기
+	public void writeComment(Bcomment comment) {
+		commentDao.insertComment(comment);
+	}
+
+	// 해당 게시글의 댓글 보기
 	public Bcomment getComment(int bno) {
 		Bcomment bcomment = commentDao.selectComment(bno);
 		return bcomment;
 	}
-
-//	public List<Bcomment> getCommentList(int bno) {
-//		List<Bcomment> commentList = commentDao.selectList(bno);
-//		return commentList;
-//	}
 
 }
