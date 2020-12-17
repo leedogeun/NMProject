@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -144,18 +147,24 @@ public class HomeController {
 		return "/updateBoardForm";
 	}
 
-	// 게시물 상세보기 + 해당 게시글의 댓글 보기
-	@RequestMapping("/boardDetail")
-	public String boardDetail(int bno, Model model) {
-		service.increaseHitcount(bno); // 게시글 조회수 증가
+	// 게시물 상세보기 + 해당 게시글의 댓글 보기 + 게시글 조회수 증가
+	@RequestMapping("/boardDetail") // @CookieValue(value="내가 hitcount 쿠키 사용") 쿠키 변수에 문자열로 저장
+	public String boardDetail(int bno, Model model, @CookieValue(value = "hitcount") String cookie,
+			HttpServletResponse response) {
+		System.out.println("****cookie****" + cookie);
+		if (!(cookie.contains(String.valueOf(bno)))) { // 누적된 값 중 bno와 일치하는게 없다면
+			cookie += bno + "/"; // bno로 쿠키 구분 (누적 형태 : 1/2/3/4/...)
+			service.increaseHitcount(bno); // 게시글 조회수 증가
+		}
+		// 누적된 값 중 bno와 일치하는게 있다면 기존의 값을 다시 hitcount로 덮어쓰기
+		response.addCookie(new Cookie("hitcount", cookie));
+		// service.increaseHitcount(bno); // 게시글 조회수 증가
 		Board board = service.getBoard(bno);
 		Bcomment bcomment = commmentService.getComment(bno);
 		model.addAttribute("board", board);
 		model.addAttribute("bcomment", bcomment);
 		return "/boardDetail";
 	}
-	
-	
 
 	// 게시글 쓰기 완료
 	@RequestMapping("/writeBoard")
@@ -172,7 +181,12 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public String home(Locale locale, Model model, HttpServletResponse response) {
+		Cookie cookie = new Cookie("hitcount", null); // hitcount 쿠키 생성
+		cookie.setComment("게시글 조회수"); // 쿠키 설명
+		cookie.setMaxAge(60 * 60 * 24); // 쿠키 유효시간 (초 기준 60*60*24=1일)
+		response.addCookie(cookie); // 쿠키 추가
+
 		logger.info("Welcome home! The client locale is {}.", locale);
 
 		Date date = new Date();
