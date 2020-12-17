@@ -31,10 +31,6 @@
 	<h4>게시물 상세보기</h4>
 	<form> 
 		<div class="form-group">
-	    	<label for="bno">글번호</label>
-	    	<input id="bno" type="text" class="form-control" value="${board.bno}" readonly>
-	    </div>	 
-		<div class="form-group">
 	    	<label for="btitle">제목</label>
 	    	<input id="btitle" type="text" class="form-control" value="${board.btitle}" readonly>
 	    </div>
@@ -74,9 +70,9 @@
 	    	<label for="cdate">날짜</label>
 	    	<input id="cdate" type="text" class="form-control" value="<fmt:formatDate value="${bcomment.cdate}" pattern="yyyy년 MM월 dd일"/>" readonly>
 	    </div>
-	    <div>
+	    <div class="form-group">
 	    	<a href="updateCommentForm?bno=${board.bno}" class="btn btn-default" role="button">수정</a>
-			<a href="deleteComment?bno=${board.bno}" class="btn btn-default" role="button">삭제</a>
+			<a href="deleteComment?cno=${bcomment.cno}&bno=${board.bno}" class="btn btn-default" role="button">삭제</a> 
 	    </div> 	           				
 	</c:if>
 	

@@ -12,6 +12,11 @@ public class CommentService {
 	@Autowired
 	private CommentDao commentDao;
 
+	// 댓글 삭제
+	public void deleteComment(int cno) {
+		commentDao.deleteComment(cno);
+	}
+
 	// 댓글 수정 완료
 	public void updateComment(Bcomment comment) {
 		commentDao.updateComment(comment);

@@ -10,13 +10,13 @@
 			from(
 				select bno, btitle, bcontent, bwriter, bdate, hitcount
 				from board
-				order by bno asc
+				order by bno asc   
 			)
 			where rownum &lt;= #{endRowNo} <!-- <=끝 -->
 		) 
 		where rn &gt;= #{startRowNo} <!-- >=1 -->
 	</select>
- 
+	
 	<!-- 전체 게시글 수 가져오기 -->
 	<select id="selectTotalRowNum" resultType="int">
 		select count(*) from board

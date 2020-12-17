@@ -32,6 +32,14 @@ public class HomeController {
 	@Autowired
 	private CommentService commmentService; // 댓글
 
+	// 댓글 삭제
+	@RequestMapping("/deleteComment")
+	public String deleteComment(int bno, int cno) {
+		commmentService.deleteComment(cno);
+		return "redirect:/boardDetail?bno=" + bno;
+
+	}
+
 	// 댓글 수정 완료
 	@RequestMapping(value = "/updateComment", method = RequestMethod.POST)
 	public String updateComment(Bcomment comment, int bno) {
@@ -123,10 +131,9 @@ public class HomeController {
 
 	// 게시글 수정 완료
 	@RequestMapping(value = "/updateBoard", method = RequestMethod.POST)
-	public String updateBoard(Board board, HttpSession session) {
+	public String updateBoard(Board board, int bno) {
 		service.updateBoard(board);
-		int pageNo = (Integer) session.getAttribute("pageNo");
-		return "redirect:/boardList?pageNo=" + pageNo;
+		return "redirect:/boardDetail?bno=" + bno;
 	}
 
 	// 게시글 수정
@@ -140,13 +147,15 @@ public class HomeController {
 	// 게시물 상세보기 + 해당 게시글의 댓글 보기
 	@RequestMapping("/boardDetail")
 	public String boardDetail(int bno, Model model) {
-		service.increaseHitcount(bno);
+		service.increaseHitcount(bno); // 게시글 조회수 증가
 		Board board = service.getBoard(bno);
 		Bcomment bcomment = commmentService.getComment(bno);
 		model.addAttribute("board", board);
 		model.addAttribute("bcomment", bcomment);
 		return "/boardDetail";
 	}
+	
+	
 
 	// 게시글 쓰기 완료
 	@RequestMapping("/writeBoard")

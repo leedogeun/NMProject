@@ -29,7 +29,7 @@
 	  	</div>
 	  	<div class="form-group">
 	  		<input type="submit" class="btn btn-default" value="수정하기"/>
-	  			<a href="boardList?pageNo=${pageNo}" class="btn btn-default" role="button">목록</a>
+	  		<a href="boardDetail?bno=${board.bno}" class="btn btn-default" role="button">취소</a>
 	  	</div>
 	</form>		
 </body>

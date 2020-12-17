@@ -25,9 +25,11 @@
 			</tr>
 		</thead>
 		<tbody>
-				<c:forEach var="board" items="${boardList}">
+				<c:forEach var="board" items="${boardList}" varStatus="i">
 					<tr>
-						<th scope="row">${board.bno}</th>
+						<%-- <th scope="row">${totalRowNum - (pageNo+1) * rowsPerPage+i.index}</th> --%>
+						<th scope="row">${totalRowNum - (pageNo-1) * rowsPerPage+i.count}</th>
+						<%-- <th scope="row">${board.bno}</th> --%>
 						<td><a href="boardDetail?bno=${board.bno}">${board.btitle}</a></td>
 						<td>${board.bwriter}</td>
 						<td><fmt:formatDate value="${board.bdate}" pattern="yyyy-MM-dd" /></td>

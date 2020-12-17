@@ -12,6 +12,12 @@ public class CommentDao {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
+	// 댓글 삭제
+	public int deleteComment(int cno) {
+		int rows = sqlSessionTemplate.delete("comment.deleteComment", cno);
+		return rows;
+	}
+
 	// 댓글 수정 완료
 	public int updateComment(Bcomment comment) {
 		int rows = sqlSessionTemplate.update("comment.updateComment", comment);

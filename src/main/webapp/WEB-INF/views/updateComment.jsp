@@ -72,13 +72,9 @@
 	    	<label for="ccontent">내용</label>
 	    	<textarea id="ccontent" name="ccontent" class="form-control" rows="3" placeholder="내용을 입력하세요">${comment.ccontent}</textarea>
 	  	</div>
-		<div class="form-group">
-	    	<label for="cdate">날짜</label>
-	    	<input id="cdate" type="text" class="form-control" value="<fmt:formatDate value="${comment.cdate}" pattern="yyyy년 MM월 dd일"/>" readonly>
-	    </div>
 	    <div>
 	    	<input type="submit" class="btn btn-default" value="수정하기"/>
-			<a href="boardDetail?bno=${board.bno}" class="btn btn-default" role="button">목록</a>
+			<a href="boardDetail?bno=${board.bno}" class="btn btn-default" role="button">취소</a>
 	    </div> 
 	 </form>	
 

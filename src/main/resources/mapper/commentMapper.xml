@@ -2,7 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="comment">
 
-	<!-- 댓글 수정 완료 -->
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="int">
+		delete from bcomment
+		where cno = #{cno}
+	</delete>
+	
+	<!-- 댓글 수정 완료 --> 
 	<update id="updateComment" parameterType="com.mycompany.board.dto.Bcomment">
 		update bcomment set ccontent = #{ccontent}
 		where cno = #{cno}
