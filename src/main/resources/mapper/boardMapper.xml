@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
 	
+	<!-- 비밀번호 확인 -->
+	<select id="checkPw" parameterType="map" resultType="int">
+	select count(*) 
+	from board
+	where bno = #{bno}
+	and BPASSWORD = #{password}
+	</select>
+	
 	<!-- 게시글 가져오기 -->
 	<select id="selectList" parameterType="map" resultType="com.mycompany.board.dto.Board">
 		select rn, bno, btitle, bcontent, bwriter, bdate, hitcount

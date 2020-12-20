@@ -16,6 +16,12 @@ public class BoardDao {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
+	// 비밀번호 확인
+	public int checkPw(Map<String, Object> map) {
+		int count = sqlSessionTemplate.selectOne("board.checkPw", map);
+		return count;
+	}
+
 	// 게시글 가져오기
 	public List<Board> selectList(int startRowNo, int endRowNo) {
 		Map<String, Integer> map = new HashMap<>();
