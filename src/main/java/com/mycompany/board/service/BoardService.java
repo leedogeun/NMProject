@@ -1,6 +1,7 @@
 package com.mycompany.board.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,12 @@ public class BoardService {
 
 	@Autowired
 	private BoardDao boardDao;
+
+	// 비밀번호 확인
+	public int checkPw(Map<String, Object> map) {
+		int count = boardDao.checkPw(map);
+		return count;
+	}
 
 	// 게시글 목록 가져오기
 	public List<Board> getBoardList(int startRowNo, int endRowNo) {
