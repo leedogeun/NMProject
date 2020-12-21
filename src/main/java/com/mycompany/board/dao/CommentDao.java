@@ -1,5 +1,7 @@
 package com.mycompany.board.dao;
 
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,15 +14,22 @@ public class CommentDao {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
+	// 비밀번호 확인
+	public int checkPwComment(Map<String, Object> map) {
+		int count = sqlSessionTemplate.selectOne("comment.checkPwComment", map);
+		return count;
+	}
+
 	// 댓글 삭제
-	public int deleteComment(int cno) {
-		int rows = sqlSessionTemplate.delete("comment.deleteComment", cno);
+	public int deleteComment(Map<String, Integer> map) {
+		int rows = sqlSessionTemplate.delete("comment.deleteComment", map);
 		return rows;
 	}
 
 	// 댓글 수정 완료
 	public int updateComment(Bcomment comment) {
 		int rows = sqlSessionTemplate.update("comment.updateComment", comment);
+		System.out.println(rows+"ddddddddddddddddd");
 		return rows;
 	}
 

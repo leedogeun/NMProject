@@ -14,19 +14,16 @@
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-
-
-function check(){
+function check(){ // 게시글 수정 시 비밀번호 확인
 	var pw = $("#password").val();
 	if(pw == "") {
 		//$("#password").text("비밀번호를 입력하세요."); // span 부분에 에러메세지 내용이 나타난다.  
-		alert("비밀번호를 입력하세요"); 
+		alert("비밀번호를 입력해 주세요."); 
 		return false;
 	}
 
-	
 	var result = true;
-	var data = { "password": $("#password").val(), "bno" : ${board.bno}};
+	var data = { "password": $("#password").val(), "bno" : "${board.bno}" };
 	
 	$.ajax({
         url:"/board/pwCheck",
@@ -47,8 +44,6 @@ function check(){
 	})
 	return result;
 }
-
-
 </script>
 <title>Insert title here</title>
 </head>
@@ -65,8 +60,8 @@ function check(){
 	    	<textarea id="bcontent" name="bcontent" class="form-control" rows="3" placeholder="내용을 입력하세요">${board.bcontent}</textarea>
 	  	</div>
 	  	<div class="form-group">
-	    	<label for="bcontent">비밀번호</label>
-	    	<input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요" style="width: 190px;height: 35px;"></input>
+	    	<label for="password">비밀번호</label>
+	    	<input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력해야 수정할 수 있습니다."></input>
 	  	</div>
 	  	<div class="form-group">
 	  		<input type="submit" class="btn btn-default" value="수정하기"/>

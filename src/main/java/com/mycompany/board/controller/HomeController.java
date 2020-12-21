@@ -40,7 +40,19 @@ public class HomeController {
 	@Autowired
 	private CommentService commmentService; // 댓글
 
-	// 비밀번호 확인
+	// 댓글 비밀번호 확인
+	@RequestMapping(value = "/pwCheckComment")
+	@ResponseBody
+	public int pwCheckComment(@RequestBody String data, HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("bno", request.getParameter("bno"));
+		map.put("cno", request.getParameter("cno"));
+		map.put("password", request.getParameter("password"));
+		int count = commmentService.checkPwComment(map);
+		return count;
+	}
+
+	// 게시글 비밀번호 확인
 	@RequestMapping(value = "/pwCheck")
 	@ResponseBody
 	public int pwCheck(@RequestBody String data, HttpServletRequest request) {
@@ -54,7 +66,10 @@ public class HomeController {
 	// 댓글 삭제
 	@RequestMapping("/deleteComment")
 	public String deleteComment(int bno, int cno) {
-		commmentService.deleteComment(cno);
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("bno", bno);
+		map.put("cno", cno);
+		commmentService.deleteComment(map);
 		return "redirect:/boardDetail?bno=" + bno;
 	}
 
@@ -166,7 +181,6 @@ public class HomeController {
 	@RequestMapping("/boardDetail") // @CookieValue(value="내가 hitcount 쿠키 사용") 쿠키 변수에 문자열로 저장
 	public String boardDetail(int bno, Model model, @CookieValue(value = "hitcount") String cookie,
 			HttpServletResponse response) {
-		System.out.println("****cookie****" + cookie);
 		if (!(cookie.contains(String.valueOf(bno)))) { // 누적된 값 중 bno와 일치하는게 없다면
 			cookie += bno + "/"; // bno로 쿠키 구분 (누적 형태 : 1/2/3/4/...)
 			service.increaseHitcount(bno); // 게시글 조회수 증가
