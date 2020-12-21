@@ -2,10 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="comment">
 
+	<!-- 비밀번호 확인 -->
+	<select id="checkPwComment" parameterType="map" resultType="int">
+	select count(*) 
+	from bcomment
+	where bno = #{bno} and cno = #{cno}
+	and CPASSWORD = #{password}
+	</select>
+
 	<!-- 댓글 삭제 -->
-	<delete id="deleteComment" parameterType="int">
+	<delete id="deleteComment" parameterType="map">
 		delete from bcomment
-		where cno = #{cno}
+		where bno = #{bno} and cno = #{cno} 
 	</delete>
 	
 	<!-- 댓글 수정 완료 --> 

@@ -15,16 +15,38 @@
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-	function checkForm() {
-		var pw = $("#cpassword").val();
-		if(pw == "") {
-			//$("#cpasswordError").text("비밀번호를 입력하세요."); // span 부분에 에러메세지 내용이 나타난다.  
-			alert("비밀번호를 입력하세요"); 
-			return false;
-		}
-		return true;
-	}	
+function checkUpdate(){ // 댓글 수정 시 비밀번호 확인
+	var pw = $("#password").val();
+	if(pw == "") {
+		//$("#password").text("비밀번호를 입력하세요."); // span 부분에 에러메세지 내용이 나타난다.  
+		alert("비밀번호를 입력해 주세요."); 
+		return false;
+	}
+
+	var resultU = true;
+	var data = { "password": $("#password").val(), "bno" : "${board.bno}", "cno" : "${comment.cno}" };
+	
+	$.ajax({
+        url:"/board/pwCheckComment",
+        type:'POST',
+        data: data,
+        async: false,
+        success:function(data){
+            if(data == 0){
+            	 alert("비밀번호가 틀렸습니다. 다시 입력해 주세요")
+            	resultU = false;
+            }else {
+            	resultU = true;
+            }
+        }
+       /*  error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+            alert("통신 실패.")
+        }  */ 
+	})
+	return resultU;
+}
 </script>
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -61,7 +83,7 @@
 	
 	<!-- 댓글 목록 -->
 	<h4>댓글</h4>
-	<form method="post" action="updateComment">
+	<form method="post" action="updateComment" onsubmit="return checkUpdate();">
 		<input type="hidden" name="bno" value="${board.bno}"/> 
 		<input type="hidden" name="cno" value="${comment.cno}"/> 
 		<div class="form-group">
@@ -71,6 +93,10 @@
 	  	<div class="form-group">
 	    	<label for="ccontent">내용</label>
 	    	<textarea id="ccontent" name="ccontent" class="form-control" rows="3" placeholder="내용을 입력하세요">${comment.ccontent}</textarea>
+	  	</div>
+	    <div class="form-group">
+	    	<label for="password">비밀번호</label>
+	    	<input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요"></input>
 	  	</div>
 	    <div>
 	    	<input type="submit" class="btn btn-default" value="수정하기"/>
